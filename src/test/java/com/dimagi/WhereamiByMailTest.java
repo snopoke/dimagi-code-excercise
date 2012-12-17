@@ -65,6 +65,6 @@ public class WhereamiByMailTest extends UnitilsJUnit4 {
     @Test
     public void testGetLocations() {
         ParsedMessage m = new ParsedMessage(new MailMessage("Cape Town", "Joe", "joe@test.com", null), "Cape Town");
-        service.geoLocateMessage(m);
+        service.getGeoNames(m);
     }
 }

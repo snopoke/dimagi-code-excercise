@@ -65,17 +65,50 @@ public class WhereamiByMail implements Runnable {
         }
     }
 
+    /**
+     * Parse the message subject to get the location
+     */
+    protected List<ParsedMessage> parseMessages(List<MailMessage> messages) {
+        logger.debug("Parsing messages");
+        List<ParsedMessage> parsedMessages = new ArrayList<ParsedMessage>(messages.size());
+        for (MailMessage m : messages) {
+            // assume subject is just the location
+            parsedMessages.add(new ParsedMessage(m, m.getSubject()));
+        }
+        return parsedMessages;
+    }
+
+    /**
+     * Given a list of messages get the geo locations and return a list of Geo Located messages
+     */
     protected List<LocatedMessage> geoLocationMessages(final List<ParsedMessage> messages) throws IOException {
         List<LocatedMessage> locatedMessages = new ArrayList<LocatedMessage>(messages.size());
         for (ParsedMessage m : messages) {
-            List<GeoName> geoNameList = geoLocateMessage(m);
-            GeoName gn = getBestGeoName(geoNameList);
+            List<GeoName> geoNameList = getGeoNames(m);
+            GeoName gn = getBestGeoName(m, geoNameList);
             locatedMessages.add(new LocatedMessage(m, gn.getLat(), gn.getLng()));
         }
         return locatedMessages;
     }
 
-    private GeoName getBestGeoName(List<GeoName> geoNameList) {
+    /**
+     * Save the messages to the database
+     */
+    protected void saveMessages(List<LocatedMessage> messages) {
+        logger.debug("Saving messages to database");
+        for (final LocatedMessage m : messages) {
+            final int person = getPerson(m.getName(), m.getEmail());
+            db.update("INSERT INTO locations (person_id,date,location,lat,lng) VALUES (?,?,?,?,?)",
+                    person, m.getSentDate(), m.getLocation(), m.getLat(), m.getLng());
+        }
+    }
+
+    /**
+     * Given a list of GeoNames get the best one for this message.
+     *
+     * TODO: future: find the GeoName closest to the person's previous location
+     */
+    private GeoName getBestGeoName(ParsedMessage m, List<GeoName> geoNameList) {
         if (geoNameList.isEmpty()) {
             return null;
         }
@@ -83,7 +116,11 @@ public class WhereamiByMail implements Runnable {
         return geoNameList.get(0);
     }
 
-    protected List<GeoName> geoLocateMessage(ParsedMessage m) {
+    /**
+     * Query the GeoName service and return a list of GeoNames for the
+     * message.
+     */
+    protected List<GeoName> getGeoNames(ParsedMessage m) {
         logger.debug("Extracting geonames from JSON data");
         List<GeoName> geoNameList = new ArrayList<GeoName>();
         try {
@@ -124,31 +161,6 @@ public class WhereamiByMail implements Runnable {
         String responseBody = httpClient.execute(httpget, responseHandler);
         logger.trace(responseBody);
         return responseBody;
-    }
-
-    /**
-     * Parse the message subject to get the location
-     */
-    protected List<ParsedMessage> parseMessages(List<MailMessage> messages) {
-        logger.debug("Parsing messages");
-        List<ParsedMessage> parsedMessages = new ArrayList<ParsedMessage>(messages.size());
-        for (MailMessage m : messages) {
-            // assume subject is just the location
-            parsedMessages.add(new ParsedMessage(m, m.getSubject()));
-        }
-        return parsedMessages;
-    }
-
-    /**
-     * Save the messages to the database
-     */
-    protected void saveMessages(List<LocatedMessage> messages) {
-        logger.debug("Saving messages to database");
-        for (final LocatedMessage m : messages) {
-            final int person = getPerson(m.getName(), m.getEmail());
-            db.update("INSERT INTO locations (person_id,date,location,lat,lng) VALUES (?,?,?,?,?)",
-                    person, m.getSentDate(), m.getLocation(), m.getLat(), m.getLng());
-        }
     }
 
     /**
