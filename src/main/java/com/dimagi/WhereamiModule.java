@@ -12,6 +12,8 @@ import fi.evident.dalesbred.Database;
 import jodd.mail.Pop3SslServer;
 import jodd.mail.ReceiveMailSession;
 import jodd.mail.ReceiveMailSessionProvider;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import javax.sql.DataSource;
 import java.io.File;
@@ -49,6 +51,7 @@ public class WhereamiModule extends AbstractModule {
 
         bind(File.class).annotatedWith(Names.named("config")).toInstance(props);
 
+        bind(HttpClient.class).toInstance(new DefaultHttpClient());
         bind(WhereamiByMail.class);
     }
 

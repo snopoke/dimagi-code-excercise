@@ -18,6 +18,15 @@
         <finagle.version>5.3.22</finagle.version>
         <guice.version>3.0</guice.version>
         <jopt.version>4.4-beta-2</jopt.version>
+        <logback.version>1.0.7</logback.version>
+
+        <junit.version>4.10</junit.version>
+        <hamcrest.version>1.3</hamcrest.version>
+        <mockito.version>1.8.5</mockito.version>
+        <unitils.version>3.3</unitils.version>
+
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
 	</properties>
 
 	<dependencies>
@@ -57,6 +66,11 @@
             <version>2.1.1</version>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.2.1</version>
@@ -76,11 +90,72 @@
             <artifactId>tomcat-jdbc</artifactId>
             <version>7.0.29</version>
         </dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.10</version>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit-dep</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.unitils</groupId>
+            <artifactId>unitils-dbunit</artifactId>
+            <version>${unitils.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-nop</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 	</dependencies>
 </project>

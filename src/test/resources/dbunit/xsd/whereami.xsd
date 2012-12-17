@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns="whereami" targetNamespace="whereami">
+	<xsd:element name="dbmaintain_scripts" type="dbmaintain_scripts__type" />
+	<xsd:element name="locations" type="locations__type" />
+	<xsd:element name="people" type="people__type" />
+	<xsd:complexType name="dbmaintain_scripts__type">
+		<xsd:attribute name="succeeded" use="optional" />
+		<xsd:attribute name="file_last_modified_at" use="optional" />
+		<xsd:attribute name="executed_at" use="optional" />
+		<xsd:attribute name="checksum" use="optional" />
+		<xsd:attribute name="file_name" use="optional" />
+		<xsd:attribute name="version" use="optional" />
+	</xsd:complexType>
+	<xsd:complexType name="locations__type">
+		<xsd:attribute name="id" use="optional" />
+		<xsd:attribute name="person_id" use="optional" />
+		<xsd:attribute name="location" use="optional" />
+		<xsd:attribute name="lng" use="optional" />
+		<xsd:attribute name="date" use="optional" />
+		<xsd:attribute name="lat" use="optional" />
+	</xsd:complexType>
+	<xsd:complexType name="people__type">
+		<xsd:attribute name="id" use="optional" />
+		<xsd:attribute name="email" use="optional" />
+		<xsd:attribute name="name" use="optional" />
+	</xsd:complexType>
+</xsd:schema>

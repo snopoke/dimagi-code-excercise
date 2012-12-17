@@ -1,0 +1,31 @@
+<configuration>
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+		<resetJUL>true</resetJUL>
+	</contextListener>
+
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<file>target/testoutput.log</file>
+
+		<encoder>
+			<pattern>
+				%date %level [%thread] %logger{10} [%file:%line] %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="com.dimagi" level="DEBUG" />
+
+	<root level="WARN">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+	</root>
+
+</configuration>
