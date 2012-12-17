@@ -11,9 +11,7 @@ import joptsimple.OptionSpec;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Timer;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -83,9 +81,9 @@ public class Main {
 
     private void startService() throws Exception {
         Injector injector = Guice.createInjector(stage,
-                new WhereamiModule(props));
+                new WhereIsDimagiModule(props));
 
-        WhereamiByMail service = injector.getInstance(WhereamiByMail.class);
+        WhereIsDimagiByMail service = injector.getInstance(WhereIsDimagiByMail.class);
 
         ScheduledThreadPoolExecutor executor = (ScheduledThreadPoolExecutor) injector.getInstance(ExecutorService.class);
         executor.scheduleAtFixedRate(service, 2, 60, TimeUnit.SECONDS);

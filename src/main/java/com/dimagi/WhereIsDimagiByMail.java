@@ -26,9 +26,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class WhereamiByMail implements Runnable {
+public class WhereIsDimagiByMail implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(WhereamiByMail.class);
+    private static final Logger logger = LoggerFactory.getLogger(WhereIsDimagiByMail.class);
 
     private Pattern email_pattern = Pattern.compile("(.*)\\s<(.*)>");
     ExecutorService executors;
@@ -38,11 +38,11 @@ public class WhereamiByMail implements Runnable {
     private String username;
 
     @Inject
-    WhereamiByMail(ExecutorService executors,
-                   ReceiveMailSessionProvider sessionProvider,
-                   Database db,
-                   HttpClient httpClient,
-                   @Named("geo.username") String geoUsername) {
+    WhereIsDimagiByMail(ExecutorService executors,
+                        ReceiveMailSessionProvider sessionProvider,
+                        Database db,
+                        HttpClient httpClient,
+                        @Named("geo.username") String geoUsername) {
         this.executors = executors;
         this.sessionProvider = sessionProvider;
         this.db = db;
@@ -53,7 +53,7 @@ public class WhereamiByMail implements Runnable {
     @Override
     public void run() {
         try {
-            List<MailMessage> messages = getMailMessages(getSession());
+            List<Message> messages = getMailMessages(getSession());
             if (!messages.isEmpty()) {
                 List<ParsedMessage> parsedMessages = parseMessages(messages);
                 List<LocatedMessage> locatedMessages = geoLocationMessages(parsedMessages);
@@ -68,10 +68,10 @@ public class WhereamiByMail implements Runnable {
     /**
      * Parse the message subject to get the location
      */
-    protected List<ParsedMessage> parseMessages(List<MailMessage> messages) {
+    protected List<ParsedMessage> parseMessages(List<Message> messages) {
         logger.debug("Parsing messages");
         List<ParsedMessage> parsedMessages = new ArrayList<ParsedMessage>(messages.size());
-        for (MailMessage m : messages) {
+        for (Message m : messages) {
             // assume subject is just the location
             parsedMessages.add(new ParsedMessage(m, m.getSubject()));
         }
@@ -186,14 +186,14 @@ public class WhereamiByMail implements Runnable {
     /**
      * Get the list of mail messages in the inbox
      */
-    protected List<MailMessage> getMailMessages(ReceiveMailSession session) {
+    protected List<Message> getMailMessages(ReceiveMailSession session) {
         logger.info("Polling mail for new messages");
         try {
             session.open();
 
             int messageCount = session.getMessageCount();
             logger.info("{} new messages found", messageCount);
-            List<MailMessage> messages = new ArrayList<MailMessage>(messageCount);
+            List<Message> messages = new ArrayList<Message>(messageCount);
 
             ReceivedEmail[] emails = session.receiveEmail(false);
             if (emails != null) {
@@ -205,7 +205,7 @@ public class WhereamiByMail implements Runnable {
                         name = matcher.group(1);
                         from = matcher.group(2);
                     }
-                    messages.add(new MailMessage(email.getSubject(), name, from, email.getSentDate()));
+                    messages.add(new Message(email.getSubject(), name, from, email.getSentDate()));
                 }
             }
             return messages;

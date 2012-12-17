@@ -18,14 +18,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@DataSet({"/dbunit/WhereamiByMailTest.xml"})
-public class WhereamiByMailTest extends UnitilsJUnit4 {
+@DataSet({"/dbunit/WhereIsDimagiByMailTest.xml"})
+public class WhereIsDimagiByMailTest extends UnitilsJUnit4 {
 
     @TestDataSource
     public DataSource datasource;
 
     private Database db;
-    private WhereamiByMail service;
+    private WhereIsDimagiByMail service;
     private ReceiveMailSessionProvider sessionProvider;
 
 
@@ -33,7 +33,7 @@ public class WhereamiByMailTest extends UnitilsJUnit4 {
     public void setup() {
         sessionProvider = Mockito.mock(ReceiveMailSessionProvider.class);
         db = Database.forDataSource(datasource);
-        service = new WhereamiByMail(null, sessionProvider, db, new DefaultHttpClient(), "demo");
+        service = new WhereIsDimagiByMail(null, sessionProvider, db, new DefaultHttpClient(), "demo");
     }
 
     @Test
@@ -64,7 +64,7 @@ public class WhereamiByMailTest extends UnitilsJUnit4 {
 
     @Test
     public void testGetLocations() {
-        ParsedMessage m = new ParsedMessage(new MailMessage("Cape Town", "Joe", "joe@test.com", null), "Cape Town");
+        ParsedMessage m = new ParsedMessage(new Message("Cape Town", "Joe", "joe@test.com", null), "Cape Town");
         service.getGeoNames(m);
     }
 }

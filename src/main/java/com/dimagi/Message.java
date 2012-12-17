@@ -2,13 +2,13 @@ package com.dimagi;
 
 import java.util.Date;
 
-public class MailMessage {
+public class Message {
     private String subject;
     private String name;
     private String email;
     private Date sentDate;
 
-    public MailMessage(String subject, String name, String email, Date sentDate) {
+    public Message(String subject, String name, String email, Date sentDate) {
         this.subject = subject;
         this.name = name;
         this.email = email;

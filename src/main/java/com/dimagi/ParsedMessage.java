@@ -2,7 +2,7 @@ package com.dimagi;
 
 import java.util.Date;
 
-public class ParsedMessage extends MailMessage {
+public class ParsedMessage extends Message {
     private String location;
 
     public ParsedMessage(String subject, String name, String email, Date sentDate, String location) {
@@ -10,7 +10,7 @@ public class ParsedMessage extends MailMessage {
         this.location = location;
     }
 
-    public ParsedMessage(MailMessage m, String location) {
+    public ParsedMessage(Message m, String location) {
         super(m.getSubject(), m.getName(), m.getEmail(), m.getSentDate());
         this.location = location;
     }

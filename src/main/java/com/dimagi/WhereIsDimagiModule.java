@@ -1,16 +1,12 @@
 package com.dimagi;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Key;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
-import com.twitter.util.ExecutorServiceFuturePool;
-import com.twitter.util.FuturePool;
 import fi.evident.dalesbred.Database;
 import jodd.mail.Pop3SslServer;
-import jodd.mail.ReceiveMailSession;
 import jodd.mail.ReceiveMailSessionProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -21,7 +17,7 @@ import java.io.FileInputStream;
 import java.util.Properties;
 import java.util.concurrent.*;
 
-public class WhereamiModule extends AbstractModule {
+public class WhereIsDimagiModule extends AbstractModule {
 
     private static final String THREADPOOL_KEEP_ALIVE_TIME = "threadpool.KeepAliveTime";
     private static final String THREADPOOL_MAX_SIZE = "threadpool.maxSize";
@@ -40,7 +36,7 @@ public class WhereamiModule extends AbstractModule {
     private final File props;
 
 
-    public WhereamiModule(File props) throws Exception {
+    public WhereIsDimagiModule(File props) throws Exception {
         this.props = props;
         this.properties = loadProperties(props);
     }
@@ -52,7 +48,7 @@ public class WhereamiModule extends AbstractModule {
         bind(File.class).annotatedWith(Names.named("config")).toInstance(props);
 
         bind(HttpClient.class).toInstance(new DefaultHttpClient());
-        bind(WhereamiByMail.class);
+        bind(WhereIsDimagiByMail.class);
     }
 
     @Provides
