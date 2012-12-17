@@ -66,5 +66,7 @@ public class WhereIsDimagiByMailTest extends UnitilsJUnit4 {
     public void testGetLocations() {
         ParsedMessage m = new ParsedMessage(new Message("Cape Town", "Joe", "joe@test.com", null), "Cape Town");
         service.getGeoNames(m);
+
+        Assert.fail("Note yet implemented");
     }
 }

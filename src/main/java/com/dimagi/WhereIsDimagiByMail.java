@@ -110,6 +110,7 @@ public class WhereIsDimagiByMail implements Runnable {
      */
     private GeoName getBestGeoName(ParsedMessage m, List<GeoName> geoNameList) {
         if (geoNameList.isEmpty()) {
+            // TODO: handle empty list
             return null;
         }
         // for now just get the first one
@@ -129,6 +130,7 @@ public class WhereIsDimagiByMail implements Runnable {
 
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(responseBody);
+            // TODO: handle error message from JSON
             JsonNode geonames = root.get("geonames");
             if (geonames.isArray()) {
                 Iterator<JsonNode> elements = ((ArrayNode) geonames).elements();
